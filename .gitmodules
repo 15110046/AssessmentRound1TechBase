@@ -1,9 +1,3 @@
-[submodule "TBVCommon"]
-	path = TBVCommon
-	url = https://github.com/15110046/TBVCommon.git
-[submodule "TBVExtensions"]
-	path = TBVExtensions
-	url = https://github.com/15110046/TBVExtensions
 [submodule "TBVNetWork"]
 	path = TBVNetWork
 	url = https://github.com/15110046/TBVNetWork
