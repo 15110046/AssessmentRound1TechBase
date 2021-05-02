@@ -1,14 +1,8 @@
 use_frameworks!
 
-platform :ios, '9.0'
+install! 'cocoapods', :deterministic_uuids => false
 
 target 'TBVCommon_Example' do
   pod 'TBVCommon', :path => '../'
-
-  target 'TBVCommon_Tests' do
-    inherit! :search_paths
-
-    pod 'Quick', '~> 2.2.0'
-    pod 'Nimble', '~> 8.0.7'
-  end
+  pod 'TBVNetWork', :path=> '../../../SubModules/TBVNetWork'
 end

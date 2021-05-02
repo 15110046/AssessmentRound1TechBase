@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TBVNetWork'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'A short description of TBVNetWork.'
 
 # This description is used to generate tags and improve search results.
@@ -28,15 +28,15 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/15110046a@gmail.com/TBVNetWork.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
+  s.swift_version = '4.2'
+  s.static_framework = true
 
-  s.source_files = 'TBVNetWork/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'TBVNetWork' => ['TBVNetWork/Assets/*.png']
-  # }
+  s.source_files = 'TBVNetWork/Classes/**/*.{h,m,swift}'
+  s.platforms = {
+      "ios": "10.0"
+  }
+  s.dependency 'Alamofire', '4.9.0'
+  s.dependency 'Alamofire-SwiftyJSON', '3.0.0'
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end

@@ -28,15 +28,11 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/15110046a@gmail.com/TBVExtensions.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
+  s.swift_version = '4.2'
 
-  s.source_files = 'TBVExtensions/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'TBVExtensions' => ['TBVExtensions/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.source_files = 'TBVExtensions/Classes/**/*.{h,m,swift}'
+  s.platforms = {
+      "ios": "10.0"
+  }
 end

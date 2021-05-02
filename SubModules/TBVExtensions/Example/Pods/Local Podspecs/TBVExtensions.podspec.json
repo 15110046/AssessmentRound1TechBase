@@ -1,0 +1,24 @@
+{
+  "name": "TBVExtensions",
+  "version": "0.1.0",
+  "summary": "A short description of TBVExtensions.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/15110046a@gmail.com/TBVExtensions",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "15110046a@gmail.com": "hieunguyenute@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/15110046a@gmail.com/TBVExtensions.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "10.0"
+  },
+  "swift_versions": "4.2",
+  "source_files": "TBVExtensions/Classes/**/*.{h,m,swift}",
+  "swift_version": "4.2"
+}

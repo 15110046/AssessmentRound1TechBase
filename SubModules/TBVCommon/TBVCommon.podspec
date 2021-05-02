@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TBVCommon'
-  s.version          = '0.1.0'
+  s.version          = '0.1.2'
   s.summary          = 'A short description of TBVCommon.'
 
 # This description is used to generate tags and improve search results.
@@ -27,16 +27,16 @@ TODO: Add long description of the pod here.
   s.author           = { '15110046a@gmail.com' => 'hieunguyenute@gmail.com' }
   s.source           = { :git => 'https://github.com/15110046a@gmail.com/TBVCommon.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
-  s.ios.deployment_target = '9.0'
-
-  s.source_files = 'TBVCommon/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'TBVCommon' => ['TBVCommon/Assets/*.png']
-  # }
+  s.ios.deployment_target = '10.0'
+  s.swift_version = '4.2'
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.source_files = 'TBVCommon/Classes/**/*.{h,m,swift}'
+  s.platforms = {
+      "ios": "10.0"
+  }
+  s.static_framework = true
+
+  s.dependency 'TBVNetWork'
+
 end

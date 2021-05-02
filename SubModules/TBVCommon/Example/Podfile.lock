@@ -1,0 +1,38 @@
+PODS:
+  - Alamofire (4.9.0)
+  - Alamofire-SwiftyJSON (3.0.0):
+    - Alamofire (~> 4.5)
+    - SwiftyJSON (~> 4.0.0)
+  - SwiftyJSON (4.0.0)
+  - TBVCommon (0.1.2):
+    - TBVNetWork
+  - TBVNetWork (0.1.1):
+    - Alamofire (= 4.9.0)
+    - Alamofire-SwiftyJSON (= 3.0.0)
+
+DEPENDENCIES:
+  - TBVCommon (from `../`)
+  - TBVNetWork (from `../../../SubModules/TBVNetWork`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Alamofire-SwiftyJSON
+    - SwiftyJSON
+
+EXTERNAL SOURCES:
+  TBVCommon:
+    :path: "../"
+  TBVNetWork:
+    :path: "../../../SubModules/TBVNetWork"
+
+SPEC CHECKSUMS:
+  Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
+  Alamofire-SwiftyJSON: 2b3649d57dc7bb2880fb8b86f8bb969397666916
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  TBVCommon: c4e0e92458d792fdd25e28304a4687645a1df724
+  TBVNetWork: 77eb967ce79597a9cd6b2ad6989e66553a3103c9
+
+PODFILE CHECKSUM: 28f1a0946a69de9fd467e80545c0b20f063ef93f
+
+COCOAPODS: 1.10.0.rc.1

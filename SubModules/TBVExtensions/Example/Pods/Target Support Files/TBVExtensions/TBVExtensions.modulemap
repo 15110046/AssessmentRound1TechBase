@@ -1,0 +1,6 @@
+framework module TBVExtensions {
+  umbrella header "TBVExtensions-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,16 @@
+PODS:
+  - TBVExtensions (0.1.0)
+
+DEPENDENCIES:
+  - TBVExtensions (from `../`)
+
+EXTERNAL SOURCES:
+  TBVExtensions:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  TBVExtensions: 1de628b6ddccc5d360815dad949ad09ff15ec1f7
+
+PODFILE CHECKSUM: c5bd56e324acdc3b7a7e049429ccc2e086117328
+
+COCOAPODS: 1.10.0.rc.1
