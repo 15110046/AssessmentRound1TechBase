@@ -10,9 +10,9 @@ target 'AssessmentRound1TechBase' do
   pod 'SwiftLint'
 
   # Local pod
-  pod 'TBVNetWork', :path => 'SubModules/TBVNetWork'
-  pod 'TBVExtensions', :path => 'SubModules/TBVExtensions'
-  pod 'TBVCommon', :path => 'SubModules/TBVCommon'
+  pod 'TBVNetWork', :path => '../SubModules/TBVNetWork'
+  pod 'TBVExtensions', :path => '../SubModules/TBVExtensions'
+  pod 'TBVCommon', :path => '../SubModules/TBVCommon'
 
   target 'AssessmentRound1TechBaseTests' do
     inherit! :search_paths

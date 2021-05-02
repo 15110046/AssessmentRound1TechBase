@@ -16,9 +16,9 @@ PODS:
 DEPENDENCIES:
   - HNImageView (= 0.3.3)
   - SwiftLint
-  - TBVCommon (from `SubModules/TBVCommon`)
-  - TBVExtensions (from `SubModules/TBVExtensions`)
-  - TBVNetWork (from `SubModules/TBVNetWork`)
+  - TBVCommon (from `../SubModules/TBVCommon`)
+  - TBVExtensions (from `../SubModules/TBVExtensions`)
+  - TBVNetWork (from `../SubModules/TBVNetWork`)
 
 SPEC REPOS:
   trunk:
@@ -30,11 +30,11 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   TBVCommon:
-    :path: SubModules/TBVCommon
+    :path: "../SubModules/TBVCommon"
   TBVExtensions:
-    :path: SubModules/TBVExtensions
+    :path: "../SubModules/TBVExtensions"
   TBVNetWork:
-    :path: SubModules/TBVNetWork
+    :path: "../SubModules/TBVNetWork"
 
 SPEC CHECKSUMS:
   Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
@@ -46,6 +46,6 @@ SPEC CHECKSUMS:
   TBVExtensions: 1de628b6ddccc5d360815dad949ad09ff15ec1f7
   TBVNetWork: 77eb967ce79597a9cd6b2ad6989e66553a3103c9
 
-PODFILE CHECKSUM: 1ce342510d59f12cba079ead59dff4ce1259e293
+PODFILE CHECKSUM: 3de9102d82598eaf77e60908d9469b7baff4c9a5
 
 COCOAPODS: 1.10.0.rc.1
