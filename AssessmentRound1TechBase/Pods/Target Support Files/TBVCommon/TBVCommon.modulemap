@@ -1,0 +1,6 @@
+framework module TBVCommon {
+  umbrella header "TBVCommon-umbrella.h"
+
+  export *
+  module * { export * }
+}

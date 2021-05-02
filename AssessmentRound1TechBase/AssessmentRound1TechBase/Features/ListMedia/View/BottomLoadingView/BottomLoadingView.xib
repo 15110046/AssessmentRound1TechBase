@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BottomLoadingView" customModule="AssessmentRound1TechBase" customModuleProvider="target">
+            <connections>
+                <outlet property="indicatorView" destination="UJM-CF-2Yn" id="fmC-np-fzS"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="643" height="86"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="UJM-CF-2Yn">
+                    <rect key="frame" x="260" y="38" width="20" height="20"/>
+                </activityIndicatorView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iG1-Hw-Lt3">
+                    <rect key="frame" x="284" y="37.5" width="75" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="UJM-CF-2Yn" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="Ia6-uy-wdz"/>
+                <constraint firstItem="iG1-Hw-Lt3" firstAttribute="leading" secondItem="UJM-CF-2Yn" secondAttribute="trailing" constant="4" id="Sau-m7-eJ4"/>
+                <constraint firstItem="iG1-Hw-Lt3" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="Wgk-A0-m5l"/>
+                <constraint firstItem="iG1-Hw-Lt3" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="gay-dd-heS"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="303.62318840579712" y="-163.39285714285714"/>
+        </view>
+    </objects>
+</document>

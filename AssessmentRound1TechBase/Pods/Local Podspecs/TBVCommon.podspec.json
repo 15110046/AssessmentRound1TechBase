@@ -1,0 +1,30 @@
+{
+  "name": "TBVCommon",
+  "version": "0.1.2",
+  "summary": "A short description of TBVCommon.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/15110046a@gmail.com/TBVCommon",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "15110046a@gmail.com": "hieunguyenute@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/15110046a@gmail.com/TBVCommon.git",
+    "tag": "0.1.2"
+  },
+  "platforms": {
+    "ios": "10.0"
+  },
+  "swift_versions": "4.2",
+  "source_files": "TBVCommon/Classes/**/*.{h,m,swift}",
+  "static_framework": true,
+  "dependencies": {
+    "TBVNetWork": [
+
+    ]
+  },
+  "swift_version": "4.2"
+}

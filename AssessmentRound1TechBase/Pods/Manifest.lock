@@ -1,0 +1,51 @@
+PODS:
+  - Alamofire (4.9.0)
+  - Alamofire-SwiftyJSON (3.0.0):
+    - Alamofire (~> 4.5)
+    - SwiftyJSON (~> 4.0.0)
+  - HNImageView (0.3.3)
+  - SwiftLint (0.43.1)
+  - SwiftyJSON (4.0.0)
+  - TBVCommon (0.1.2):
+    - TBVNetWork
+  - TBVExtensions (0.1.0)
+  - TBVNetWork (0.1.1):
+    - Alamofire (= 4.9.0)
+    - Alamofire-SwiftyJSON (= 3.0.0)
+
+DEPENDENCIES:
+  - HNImageView (= 0.3.3)
+  - SwiftLint
+  - TBVCommon (from `SubModules/TBVCommon`)
+  - TBVExtensions (from `SubModules/TBVExtensions`)
+  - TBVNetWork (from `SubModules/TBVNetWork`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Alamofire-SwiftyJSON
+    - HNImageView
+    - SwiftLint
+    - SwiftyJSON
+
+EXTERNAL SOURCES:
+  TBVCommon:
+    :path: SubModules/TBVCommon
+  TBVExtensions:
+    :path: SubModules/TBVExtensions
+  TBVNetWork:
+    :path: SubModules/TBVNetWork
+
+SPEC CHECKSUMS:
+  Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
+  Alamofire-SwiftyJSON: 2b3649d57dc7bb2880fb8b86f8bb969397666916
+  HNImageView: b5d0bc8d7fd07c5def899962f59473da8a0091d4
+  SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  TBVCommon: c4e0e92458d792fdd25e28304a4687645a1df724
+  TBVExtensions: 1de628b6ddccc5d360815dad949ad09ff15ec1f7
+  TBVNetWork: 77eb967ce79597a9cd6b2ad6989e66553a3103c9
+
+PODFILE CHECKSUM: 1ce342510d59f12cba079ead59dff4ce1259e293
+
+COCOAPODS: 1.10.0.rc.1

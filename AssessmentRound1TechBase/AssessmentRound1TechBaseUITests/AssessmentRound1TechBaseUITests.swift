@@ -7,7 +7,6 @@
 //
 
 import XCTest
-
 class AssessmentRound1TechBaseUITests: XCTestCase {
 
     override func setUp() {

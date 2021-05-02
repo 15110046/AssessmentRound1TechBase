@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="MediaHorizontalCollectionViewCell" customModule="AssessmentRound1TechBase" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="191" height="245"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="191" height="245"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LYD-F2-NxU">
+                        <rect key="frame" x="0.0" y="0.0" width="191" height="245"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image_default" translatesAutoresizingMaskIntoConstraints="NO" id="QMQ-DM-bB7" customClass="HNImageView" customModule="HNImageView">
+                                <rect key="frame" x="0.0" y="0.0" width="191" height="191"/>
+                                <color key="backgroundColor" red="0.96068006750000001" green="0.96084433790000001" blue="0.96066969629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="QMQ-DM-bB7" secondAttribute="height" multiplier="1:1" id="pbp-t2-zhW"/>
+                                </constraints>
+                            </imageView>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bOH-Jo-5PT">
+                                <rect key="frame" x="0.0" y="191" width="191" height="54"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dKf-IP-Utx">
+                                        <rect key="frame" x="0.0" y="0.0" width="191" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfc-h8-7fa">
+                                        <rect key="frame" x="0.0" y="20.5" width="191" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="tfc-h8-7fa" firstAttribute="top" secondItem="dKf-IP-Utx" secondAttribute="bottom" id="RuA-2J-LIG"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="tfc-h8-7fa" secondAttribute="bottom" id="Ycz-pf-BYS"/>
+                                    <constraint firstAttribute="trailing" secondItem="tfc-h8-7fa" secondAttribute="trailing" id="adK-GV-YTp"/>
+                                    <constraint firstItem="tfc-h8-7fa" firstAttribute="leading" secondItem="bOH-Jo-5PT" secondAttribute="leading" id="c3t-7b-uVC"/>
+                                    <constraint firstItem="dKf-IP-Utx" firstAttribute="top" secondItem="bOH-Jo-5PT" secondAttribute="top" id="m5o-OG-tKV"/>
+                                    <constraint firstItem="dKf-IP-Utx" firstAttribute="leading" secondItem="bOH-Jo-5PT" secondAttribute="leading" id="vDK-vY-6W3"/>
+                                    <constraint firstAttribute="trailing" secondItem="dKf-IP-Utx" secondAttribute="trailing" id="zR4-fl-tPb"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="bOH-Jo-5PT" firstAttribute="leading" secondItem="LYD-F2-NxU" secondAttribute="leading" id="555-7E-o5y"/>
+                            <constraint firstItem="QMQ-DM-bB7" firstAttribute="leading" secondItem="LYD-F2-NxU" secondAttribute="leading" id="CmL-cn-tGN"/>
+                            <constraint firstItem="bOH-Jo-5PT" firstAttribute="top" secondItem="QMQ-DM-bB7" secondAttribute="bottom" id="DD0-F6-6TU"/>
+                            <constraint firstAttribute="bottom" secondItem="bOH-Jo-5PT" secondAttribute="bottom" id="MRi-7D-p7t"/>
+                            <constraint firstAttribute="trailing" secondItem="QMQ-DM-bB7" secondAttribute="trailing" id="TjR-eg-jMB"/>
+                            <constraint firstAttribute="trailing" secondItem="bOH-Jo-5PT" secondAttribute="trailing" id="doh-25-79X"/>
+                            <constraint firstItem="QMQ-DM-bB7" firstAttribute="top" secondItem="LYD-F2-NxU" secondAttribute="top" id="k4d-VB-6Lm"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="LYD-F2-NxU" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="3MT-iQ-5XU"/>
+                <constraint firstAttribute="trailing" secondItem="LYD-F2-NxU" secondAttribute="trailing" id="48g-Sh-ZOS"/>
+                <constraint firstItem="LYD-F2-NxU" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="VdY-dw-Sp6"/>
+                <constraint firstAttribute="bottom" secondItem="LYD-F2-NxU" secondAttribute="bottom" id="XXw-3e-Pso"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="191" height="245"/>
+            <connections>
+                <outlet property="authorLabel" destination="dKf-IP-Utx" id="Bem-sN-uHf"/>
+                <outlet property="containerView" destination="LYD-F2-NxU" id="fGJ-4y-qGC"/>
+                <outlet property="mediaImageView" destination="QMQ-DM-bB7" id="h08-4U-3GB"/>
+                <outlet property="sizeLabel" destination="tfc-h8-7fa" id="XUx-Q1-zzW"/>
+            </connections>
+            <point key="canvasLocation" x="139.85507246376812" y="171.76339285714286"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="image_default" width="311" height="207.5"/>
+    </resources>
+</document>
