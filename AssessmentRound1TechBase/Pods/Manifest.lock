@@ -3,6 +3,7 @@ PODS:
   - Alamofire-SwiftyJSON (3.0.0):
     - Alamofire (~> 4.5)
     - SwiftyJSON (~> 4.0.0)
+  - FPSCounter (4.1.0)
   - HNImageView (0.3.3)
   - SwiftLint (0.43.1)
   - SwiftyJSON (4.0.0)
@@ -14,6 +15,7 @@ PODS:
     - Alamofire-SwiftyJSON (= 3.0.0)
 
 DEPENDENCIES:
+  - FPSCounter (~> 4.1)
   - HNImageView (= 0.3.3)
   - SwiftLint
   - TBVCommon (from `../SubModules/TBVCommon`)
@@ -24,6 +26,7 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - Alamofire-SwiftyJSON
+    - FPSCounter
     - HNImageView
     - SwiftLint
     - SwiftyJSON
@@ -39,6 +42,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
   Alamofire-SwiftyJSON: 2b3649d57dc7bb2880fb8b86f8bb969397666916
+  FPSCounter: 884afec377de66637808c4f52ecc3b85a404732b
   HNImageView: b5d0bc8d7fd07c5def899962f59473da8a0091d4
   SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
@@ -46,6 +50,6 @@ SPEC CHECKSUMS:
   TBVExtensions: 1de628b6ddccc5d360815dad949ad09ff15ec1f7
   TBVNetWork: 77eb967ce79597a9cd6b2ad6989e66553a3103c9
 
-PODFILE CHECKSUM: 3de9102d82598eaf77e60908d9469b7baff4c9a5
+PODFILE CHECKSUM: de437371422573ea6c565a35a570a9643fc1de90
 
 COCOAPODS: 1.10.0.rc.1

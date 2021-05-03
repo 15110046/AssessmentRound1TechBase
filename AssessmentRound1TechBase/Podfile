@@ -8,6 +8,7 @@ target 'AssessmentRound1TechBase' do
   # Remote pod
 	pod 'HNImageView', '0.3.3'
   pod 'SwiftLint'
+  pod 'FPSCounter', '~> 4.1'
 
   # Local pod
   pod 'TBVNetWork', :path => '../SubModules/TBVNetWork'
