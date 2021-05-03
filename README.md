@@ -5,9 +5,10 @@
 ## Cấu trúc file
 
 - AssessmentRound1TechBase(Project) 
-- SubModules ---- TBVCommon       |
-             ---- TBVExtensions   |=> các module độc lập được tách biệt để sử dụng cho các project/target khác sau này
-             ---- TBVNetWork.     |
+- SubModules(các module độc lập được tách biệt để sử dụng cho các project/target khác sau này)
+    + TBVCommon     
+    + TBVExtensions 
+    + TBVNetWork
              
 ## Một số libs sử dụng
 
