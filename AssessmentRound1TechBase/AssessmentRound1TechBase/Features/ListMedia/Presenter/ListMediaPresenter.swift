@@ -15,7 +15,7 @@ class ListMediaPresenterImp: BasePresenter {
     
     private var currentPage: Int = 1
     let limitItemInBlock: Int = Constants.LimitItemInBlock
-    var subscribeStateLoading: ((Bool) -> Void)? = nil
+    var subscribeStateLoading: ((Bool) -> Void)?
     var stopRequestFetching: Bool = false
     
     func inject(interactor: ListMediaInteractor?, router: ListMediaRouter?) {  
@@ -29,6 +29,7 @@ class ListMediaPresenterImp: BasePresenter {
 }
 
 extension ListMediaPresenterImp: ListMediaPresenter {
+    
     func clearCacheSize() {
         interactor?.getDataSource().forEach({ (model) in
             model.clearSize()
@@ -37,9 +38,9 @@ extension ListMediaPresenterImp: ListMediaPresenter {
     
     func getColumnInteritem(model: BaseModel) -> Int {
         switch interactor?.modeDisplay {
-        case .Regular:
+        case .regular:
             return (interactor?.modeDisplay.column ?? 1) - 1
-        case .Compact:
+        case .compact:
             switch model {
             case is MediaModel:
                 return (interactor?.modeDisplay.column ?? 1) - 1
@@ -56,14 +57,21 @@ extension ListMediaPresenterImp: ListMediaPresenter {
     
     func startLoadMedia(for media: MediaModel,
                         indexPath: IndexPath,
-                        completion: @escaping ([IndexPath]) -> ()) {
-        interactor?.startOperations(for: media,
-                                    indexPath: indexPath,
-                                    completion: completion)
+                        completion: @escaping ([IndexPath]) -> Void) {
+        switch media.getStateImage() {
+        case .new:
+            interactor?.startDownload(for: media, indexPath: indexPath, completion: { [weak self] _ in
+                self?.interactor?.startFiltration(for: media, indexPath: indexPath, completion: completion)
+            })
+        case .downloaded:
+            interactor?.startFiltration(for: media, indexPath: indexPath, completion: completion)
+        case .filtered: break
+        case .failed: break
+        }
     }
         
     func loadImagesForOnscreenCells(at indexPathsForVisible: [IndexPath],
-                                    completion: @escaping ([IndexPath]) -> ()) {
+                                    completion: @escaping ([IndexPath]) -> Void) {
         interactor?.loadImages(for: indexPathsForVisible,
                                completion: completion)
     }
@@ -85,11 +93,14 @@ extension ListMediaPresenterImp: ListMediaPresenter {
     }
     
     func getModeDisplay() -> ModeDisplay {
-        return interactor?.modeDisplay ?? ModeDisplay.Regular
+        return interactor?.modeDisplay ?? ModeDisplay.regular
     }
     
-    func getInset() -> (top: Float, left: Float, bottom: Float, right: Float) {
-        return interactor?.insets ?? (0, 0, 0, 0)
+    func getInset() -> BasePresenter.Insets {
+        return interactor?.insets ?? BasePresenter.Insets(top: 0,
+                                                          left: 0,
+                                                          bottom: 0,
+                                                          right: 0)
     }
     
     func collectionViewIsFetchingData() -> Bool {
@@ -102,23 +113,23 @@ extension ListMediaPresenterImp: ListMediaPresenter {
         interactor?.clearDataSource()
     }
 
-    func refreshData(completion: @escaping () -> ()) {
+    func refreshData(completion: @escaping () -> Void) {
         currentPage = 1
         stopRequestFetching = false
         interactor?.clearDataSource()
         completion()
     }
 
-    func requestFetchData(completion: @escaping (Response<[IndexPath]>)->()) {
+    func requestFetchData(completion: @escaping ([IndexPath]) -> Void) {
         if !networkIsWork {
-            completion(.init(status: .failure(Constants.ErrorNetwork)))
+            router?.showToast(title: Constants.NotifiNameDefault, message: Constants.ErrorNetwork)
             return
         }
         
         interactor?.fetchData(currentPage: currentPage, limit: limitItemInBlock, completion: { [weak self] (indexPaths) in
-            if indexPaths.count > 0 {
+            if !indexPaths.isEmpty {
                 self?.currentPage += 1
-                completion(.init(status: .success(indexPaths)))
+                completion(indexPaths)
             } else {
                 self?.stopRequestFetching = true
             }
@@ -150,9 +161,9 @@ extension ListMediaPresenterImp: ListMediaPresenter {
         }
         switch dataModel {
         case let mediaModel as MediaModel:
-            return MediaCollectionViewCellPresenter(modeDisplay: interactor?.modeDisplay ?? ModeDisplay.Regular, dataModel: mediaModel)
+            return MediaCollectionViewCellPresenter(modeDisplay: interactor?.modeDisplay ?? ModeDisplay.regular, dataModel: mediaModel)
         case let noteModel as NoteModel:
-            return NoteCollectionViewCellPresenter(modeDisplay: interactor?.modeDisplay ?? ModeDisplay.Regular, dataModel: noteModel)
+            return NoteCollectionViewCellPresenter(modeDisplay: interactor?.modeDisplay ?? ModeDisplay.regular, dataModel: noteModel)
         default:
             return nil
         }

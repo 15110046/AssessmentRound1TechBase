@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="211" height="109"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rUI-hX-twh">
-                                <rect key="frame" x="0.0" y="0.0" width="211" height="109"/>
+                                <rect key="frame" x="4" y="4" width="203" height="101"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -29,10 +29,10 @@
                         </subviews>
                         <color key="backgroundColor" red="0.96068006750000001" green="0.96084433790000001" blue="0.96066969629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="rUI-hX-twh" firstAttribute="top" secondItem="Mq7-Tb-27N" secondAttribute="top" id="Db5-4E-vHd"/>
-                            <constraint firstAttribute="bottom" secondItem="rUI-hX-twh" secondAttribute="bottom" id="WvA-G1-oH9"/>
-                            <constraint firstItem="rUI-hX-twh" firstAttribute="leading" secondItem="Mq7-Tb-27N" secondAttribute="leading" id="mpo-G0-cze"/>
-                            <constraint firstAttribute="trailing" secondItem="rUI-hX-twh" secondAttribute="trailing" id="z28-mr-SWV"/>
+                            <constraint firstItem="rUI-hX-twh" firstAttribute="top" secondItem="Mq7-Tb-27N" secondAttribute="top" constant="4" id="Db5-4E-vHd"/>
+                            <constraint firstAttribute="bottom" secondItem="rUI-hX-twh" secondAttribute="bottom" constant="4" id="WvA-G1-oH9"/>
+                            <constraint firstItem="rUI-hX-twh" firstAttribute="leading" secondItem="Mq7-Tb-27N" secondAttribute="leading" constant="4" id="mpo-G0-cze"/>
+                            <constraint firstAttribute="trailing" secondItem="rUI-hX-twh" secondAttribute="trailing" constant="4" id="z28-mr-SWV"/>
                         </constraints>
                     </view>
                 </subviews>

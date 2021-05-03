@@ -10,10 +10,10 @@ import HNImageView
 
 class BaseMediaCollectionViewCell: BaseCollectionViewCell<MediaCollectionViewCellPresenter> {
     
-    @IBOutlet private weak var mediaImageView:  HNImageView?
-    @IBOutlet private weak var authorLabel:     UILabel?
-    @IBOutlet private weak var sizeLabel:       UILabel?
-    @IBOutlet private weak var containerView:   UIView?
+    @IBOutlet private weak var mediaImageView: HNImageView?
+    @IBOutlet private weak var authorLabel: UILabel?
+    @IBOutlet private weak var sizeLabel: UILabel?
+    @IBOutlet private weak var containerView: UIView?
     
     func getImageView() -> UIImageView? {
         return mediaImageView
@@ -35,18 +35,14 @@ class BaseMediaCollectionViewCell: BaseCollectionViewCell<MediaCollectionViewCel
         super.bindCell(presenter: presenter)
         authorLabel?.text                = presenter.dataModel.getNameAuthor()
         sizeLabel?.text                  = presenter.dataModel.getNameSize()
+        borderContainerView()
+        guard let imageView = mediaImageView else { return }
+        mediaImageView?.image = presenter.getImage(size: imageView.frame.size)
+    }
+    
+    private func borderContainerView() {
         containerView?.layer.borderWidth = 1
         containerView?.layer.borderColor = UIColor.gray.cgColor
-        
-        let image = presenter.dataModel.getImage()
-        
-        if presenter.dataModel.getStateImage() == .filtered {
-            mediaImageView?.image = image
-        } else {
-            if image.size.width*image.size.height <= 1.5*(mediaImageView?.frame.width ?? 0)*(mediaImageView?.frame.height ?? 0) {
-                mediaImageView?.image = image
-            }
-        }
     }
     
     override func awakeFromNib() {
@@ -63,8 +59,7 @@ class BaseMediaCollectionViewCell: BaseCollectionViewCell<MediaCollectionViewCel
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        mediaImageView?.image = nil
-        authorLabel?.text = nil
-        sizeLabel?.text = nil
+        mediaImageView?.image = Constants.Image.Default
     }
+    
 }

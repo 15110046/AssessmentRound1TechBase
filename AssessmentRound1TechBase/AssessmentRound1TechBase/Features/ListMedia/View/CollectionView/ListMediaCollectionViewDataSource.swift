@@ -34,11 +34,11 @@ extension ListMediaCollectionViewDataSource: UICollectionViewDataSource {
             cellViewInterface.loadCell(presenterCell)
         }
         
-        if let modelModel = presenter?.getDataSource()[safe: indexPath.item] as? MediaModel {
-            presenter?.startLoadMedia(for: modelModel, indexPath: indexPath, completion: { (indexPaths) in
-                collectionView.reloadSafeItems(at: indexPaths)
-            })
-        }
+        guard let modelModel = presenter?.getDataSource()[safe: indexPath.item] as? MediaModel else { return cell }
+        
+        presenter?.startLoadMedia(for: modelModel, indexPath: indexPath, completion: { (indexPaths) in
+            collectionView.reloadSafeItems(at: indexPaths)
+        })
 
         return cell
     }

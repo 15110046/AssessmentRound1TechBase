@@ -24,4 +24,5 @@ class BottomLoadingView: BaseView {
     func getIndicatorView() -> UIActivityIndicatorView? {
         return indicatorView
     }
+    
 }

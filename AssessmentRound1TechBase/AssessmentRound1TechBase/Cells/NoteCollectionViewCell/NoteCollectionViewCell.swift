@@ -18,7 +18,7 @@ class NoteCollectionViewCell: BaseCollectionViewCell<NoteCollectionViewCellPrese
     
     override func bindCell(presenter: NoteCollectionViewCellPresenter) {
         super.bindCell(presenter: presenter)
-        noteLabel?.attributedText = presenter.dataModel.getAttributedString(type: presenter.modeDisplay)
+        noteLabel?.attributedText = presenter.getAttributedString(type: presenter.modeDisplay)
     }
     
 }

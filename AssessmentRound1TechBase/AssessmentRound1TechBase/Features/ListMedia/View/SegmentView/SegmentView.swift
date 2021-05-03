@@ -14,9 +14,9 @@ protocol SegmentViewDelegate: class {
 
 class SegmentView: BaseView {
     
-    @IBOutlet
-    private weak var segmentView: UISegmentedControl?
-    weak var delegate:            SegmentViewDelegate?
+    @IBOutlet private weak var segmentView: UISegmentedControl?
+    
+    weak var delegate: SegmentViewDelegate?
     
     @IBAction private func changeValue(_ sender: UISegmentedControl) {
         guard let nameSegmentSelected = segmentView?.titleForSegment(at: sender.selectedSegmentIndex) else { return  }
@@ -44,10 +44,8 @@ class SegmentView: BaseView {
     }
     
     func checkValid(items: [ModeDisplay], selectedMode: ModeDisplay) -> Bool {
-        if items.count == 0 { return false }
-        if !items.contains(selectedMode) {
-            return false
-        }
+        guard !items.isEmpty,
+              items.contains(selectedMode) else { return false }
         return true
     }
 

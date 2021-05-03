@@ -12,4 +12,3 @@ import HNImageView
 class MediaHorizontalCollectionViewCell: BaseMediaCollectionViewCell {
 
 }
-

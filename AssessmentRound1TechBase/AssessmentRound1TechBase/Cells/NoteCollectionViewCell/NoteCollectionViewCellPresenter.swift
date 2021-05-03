@@ -27,10 +27,10 @@ class NoteCollectionViewCellPresenter: BaseCellPresenter {
         
         if dataModel.finalHeight == -1 {
             switch modeDisplay {
-            case .Regular:
+            case .regular:
                 let constHeightCellRegular: CGFloat = 120
                 dataModel.finalHeight = constHeightCellRegular
-            case .Compact:
+            case .compact:
                 let constHeightText: CGFloat = 48
                 dataModel.finalHeight = maxWidth/CGFloat(modeDisplay.column) + constHeightText
             }
@@ -41,9 +41,9 @@ class NoteCollectionViewCellPresenter: BaseCellPresenter {
     override func calculateWidthCell(maxWidth: CGFloat) -> CGFloat {
         if dataModel.finalWidth == -1 {
             switch modeDisplay {
-            case .Regular:
+            case .regular:
                 dataModel.finalWidth = (maxWidth)/CGFloat(modeDisplay.column)
-            case .Compact:
+            case .compact:
                 let surplus: Int = Constants.LimitItemInBlock % modeDisplay.column
                 let ratio: CGFloat = CGFloat(modeDisplay.column-surplus)/CGFloat(modeDisplay.column)
                 let output: CGFloat = ratio*maxWidth
@@ -53,5 +53,31 @@ class NoteCollectionViewCellPresenter: BaseCellPresenter {
         return dataModel.finalWidth
     }
     
+    func getAttributedString(type: ModeDisplay) -> NSMutableAttributedString {
+        let atts: NSMutableAttributedString =
+            NSMutableAttributedString(string: type.name + " Cell",
+                                      attributes: getConvenienceAttributes(color: .black,
+                                                                           font: UIFont.systemFont(ofSize: 21, weight: .bold)))
+        
+        let thumbnailAtt: NSAttributedString = NSAttributedString(
+            string: "\nThumbnail Size: \(type.nameThumbnail)",
+            attributes: getConvenienceAttributes(color: .black,
+                                                 font: .systemFont(ofSize: 17,
+                                                                   weight: .bold)))
+        let layoutAtt: NSAttributedString = NSAttributedString(
+            string: "\nLayout:\n \t+\(type.nameLayout)",
+            attributes: getConvenienceAttributes(color: .black,
+                                                 font: .systemFont(ofSize: 14,
+                                                                   weight: .medium)))
+        
+        atts.append(thumbnailAtt)
+        atts.append(layoutAtt)
+        return atts
+    }
+    
+    func getConvenienceAttributes(color: UIColor, font: UIFont) -> [NSAttributedString.Key: Any] {
+        [NSAttributedString.Key.font: font,
+         NSAttributedString.Key.foregroundColor: color]
+    }
+    
 }
-

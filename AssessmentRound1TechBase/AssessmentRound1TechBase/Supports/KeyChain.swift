@@ -21,7 +21,7 @@ extension KeyChain {
             let result = receivedData.to(type: ModeDisplay.self)
             return result
         }
-        return .Regular
+        return .regular
     }
     
 }

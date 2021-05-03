@@ -18,13 +18,13 @@ class MediaModel: BaseModel {
     private var width: Double?
     private var height: Double?
     private var url: String?
-    private var download_url: String?
+    private var downloadUrl: String?
     
     private var state = MediaState.new
     private var image: UIImage = Constants.Image.Default
 
     func getStringURLMedia() -> String? {
-        return download_url
+        return downloadUrl
     }
     
     func getNameAuthor() -> String? {
@@ -58,7 +58,7 @@ class MediaModel: BaseModel {
         self.width = json["width"].double
         self.height = json["height"].double
         self.url = json["url"].string
-        self.download_url = json["download_url"].string
+        self.downloadUrl = json["download_url"].string
     }
     
 }

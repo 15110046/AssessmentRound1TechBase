@@ -10,37 +10,37 @@ import UIKit
 
 public enum ModeDisplay {
     
-    case Regular
-    case Compact
+    case regular
+    case compact
     
     init(string: String) {
         switch string {
-        case "Regular": self = .Regular
-        case "Compact": self = .Compact
-        default:        self = .Compact
+        case "Regular": self = .regular
+        case "Compact": self = .compact
+        default:        self = .compact
         }
     }
 
     func getAllMode() -> [Self] {
-        return [.Regular, .Compact]
+        return [.regular, .compact]
     }
     
     var nameThumbnail: String {
         switch self {
-        case .Regular: return "120x120"
-        case .Compact: return "Square"
+        case .regular: return "120x120"
+        case .compact: return "Square"
         }
     }
     
     var nameLayout: String {
         switch self {
-        case .Regular:
+        case .regular:
             switch UIDevice.current.userInterfaceIdiom {
             case .pad:   return "Ipad-Portrait: \(column) column"
             case .phone: return "Iphone-Portrait: \(column) column"
             default:     return ""
             }
-        case .Compact:
+        case .compact:
             switch UIDevice.current.userInterfaceIdiom {
             case .phone: return "Iphone-Portrait: \(column) column"
             case .pad:
@@ -55,20 +55,20 @@ public enum ModeDisplay {
     
     var name: String {
         switch self {
-        case .Regular: return "Regular"
-        case .Compact: return "Compact"
+        case .regular: return "Regular"
+        case .compact: return "Compact"
         }
     }
     
     var column: Int {
         switch self {
-        case .Regular:
+        case .regular:
             switch UIDevice.current.userInterfaceIdiom {
             case .phone: return 1
             case .pad:   return 2
             default:     return 0
             }
-        case .Compact:
+        case .compact:
             switch UIDevice.current.userInterfaceIdiom {
             case .phone: return 2
             case .pad:

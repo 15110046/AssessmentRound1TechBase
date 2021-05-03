@@ -10,4 +10,8 @@ import UIKit
 
 extension ListMediaViewController: ListMediaRouter {
     
+    func showToast(title: String, message: String) {
+        self.showAlert(title: title, message: message)
+    }
+    
 }

@@ -10,14 +10,14 @@ import Foundation
 
 class ListMediaInteractorImp: BaseInteractor {
     
-    var insets: (top: Float, left: Float, bottom: Float, right: Float) = (10, 10, 10, 10)
+    var insets: BasePresenter.Insets = BasePresenter.Insets(top: 10, left: 10, bottom: 10, right: 10)
     var isFetching: Bool = false
     let pendingOperations: PendingOperations = PendingOperations()
-    var modeDisplay: ModeDisplay = .Regular
-    var completionFetchData: ((Bool) -> ())?
+    var modeDisplay: ModeDisplay = .regular
+    var completionFetchData: ((Bool) -> Void)?
     private var dataSource: [BaseModel] = []
 
-    func inject(insets: (top: Float, left: Float, bottom: Float, right: Float) = (10, 10, 10, 10),
+    func inject(insets: BasePresenter.Insets,
                 modeDisplay: ModeDisplay) {
         self.modeDisplay = modeDisplay
         self.insets = insets
@@ -49,7 +49,7 @@ extension ListMediaInteractorImp: ListMediaInteractor {
 
     func startOperations(for media: MediaModel,
                          indexPath: IndexPath,
-                         completion: @escaping ([IndexPath]) -> ()) {
+                         completion: @escaping ([IndexPath]) -> Void) {
         switch media.getStateImage() {
         case .new:
             startDownload(for: media,
@@ -64,7 +64,7 @@ extension ListMediaInteractorImp: ListMediaInteractor {
         }
     }
     
-    func loadImages(for keys: [IndexPath], completion: @escaping ([IndexPath]) -> ()) {
+    func loadImages(for keys: [IndexPath], completion: @escaping ([IndexPath]) -> Void) {
         var allPendingOperations = Set(Array(pendingOperations.downloadsInProgress.keys))
         allPendingOperations.formUnion(Set(Array(pendingOperations.filtrationsInProgress.keys)))
         
@@ -98,7 +98,7 @@ extension ListMediaInteractorImp: ListMediaInteractor {
         }
     }
     
-    func startFiltration(for media: MediaModel, indexPath: IndexPath, completion: @escaping ([IndexPath]) -> ()) {
+    func startFiltration(for media: MediaModel, indexPath: IndexPath, completion: @escaping ([IndexPath]) -> Void) {
         guard pendingOperations.filtrationsInProgress[indexPath] == nil else { return }
         let filterer = ImageFiltration(media)
         
@@ -115,7 +115,7 @@ extension ListMediaInteractorImp: ListMediaInteractor {
         pendingOperations.filtrationQueue.addOperation(filterer)
     }
     
-    func startDownload(for media: MediaModel, indexPath: IndexPath, completion: @escaping ([IndexPath]) -> ()) {
+    func startDownload(for media: MediaModel, indexPath: IndexPath, completion: @escaping ([IndexPath]) -> Void) {
         guard pendingOperations.downloadsInProgress[indexPath] == nil else { return }
         let downloader = ImageDownloader(media)
         
@@ -132,23 +132,29 @@ extension ListMediaInteractorImp: ListMediaInteractor {
         pendingOperations.downloadQueue.addOperation(downloader)
     }
     
-    func fetchData(currentPage: Int, limit: Int, completion: @escaping ([IndexPath])->()) {
+    func fetchData(currentPage: Int, limit: Int, completion: @escaping ([IndexPath]) -> Void) {
         updateStateFetching(value: true)
         MediaService.share.fetchData(page: currentPage, limit: limit) { [weak self] (res) in
+            
             guard let self = self else { return }
+            
             self.updateStateFetching(value: false)
+            
             switch res.result {
             case .success(let data):
                 guard let arr = data.array?.compactMap({ MediaModel(json: $0)}) else { return }
                 
                 var paths: [IndexPath] = []
+                
                 arr.enumerated().forEach { (index, item) in
                     let indexPath = IndexPath(item: index + self.dataSource.count, section: 0)
                     paths.append(indexPath)
                 }
                 self.dataSource.append(contentsOf: arr)
+                
                 self.dataSource.append(NoteModel())
                 paths.append(IndexPath(item: self.dataSource.count - 1, section: 0))
+                
                 completion(paths)
             case .failure:
                 completion([])

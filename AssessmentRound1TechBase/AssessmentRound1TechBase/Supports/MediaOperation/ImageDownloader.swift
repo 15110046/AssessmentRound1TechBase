@@ -17,7 +17,7 @@ class ImageDownloader: Operation {
     }
     
     override func main() {
-        Log(" =>>>>>>>>> ImageDownloader \(media.getNameAuthor() ?? "")")
+        log(" =>>>>>>>>> ImageDownloader \(media.getNameAuthor() ?? "")")
         
         if isCancelled { return }
         

@@ -16,12 +16,15 @@ class ListMediaCollectionViewDelegate: NSObject {
         self.presenter = presenter
     }
 
-    private func getWidthAfterSubInset(maxWidth: CGFloat, minimumInteritemSpacing: CGFloat, columnInteritem: CGFloat) -> CGFloat {
+    private func getWidthAfterSubInset(maxWidth: CGFloat,
+                                       minimumInteritemSpacing: CGFloat,
+                                       columnInteritem: CGFloat) -> CGFloat {
         let safePixel: CGFloat = 0.5
         return maxWidth - minimumInteritemSpacing*columnInteritem - safePixel
     }
 }
 
+// MARK: UIScrollViewDelegate
 extension ListMediaCollectionViewDelegate: UIScrollViewDelegate {
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -29,20 +32,18 @@ extension ListMediaCollectionViewDelegate: UIScrollViewDelegate {
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            guard let collectionView = scrollView as? UICollectionView else { return }
-            presenter?.loadImagesForOnscreenCells(at: collectionView.indexPathsForVisibleItems) { indexPaths in
-                guard let collectionView = scrollView as? UICollectionView else { return }
-                collectionView.reloadSafeItems(at: indexPaths)
-            }
-            presenter?.resumeAllOperationsLoadMedia()
+        guard !decelerate,
+        let collectionView = scrollView as? UICollectionView else { return }
+
+        presenter?.loadImagesForOnscreenCells(at: collectionView.indexPathsForVisibleItems) { indexPaths in
+            collectionView.reloadSafeItems(at: indexPaths)
         }
+        presenter?.resumeAllOperationsLoadMedia()
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let collectionView = scrollView as? UICollectionView else { return }
         presenter?.loadImagesForOnscreenCells(at: collectionView.indexPathsForVisibleItems) { indexPaths in
-            guard let collectionView = scrollView as? UICollectionView else { return }
             collectionView.reloadSafeItems(at: indexPaths)
         }
         presenter?.resumeAllOperationsLoadMedia()
@@ -50,6 +51,7 @@ extension ListMediaCollectionViewDelegate: UIScrollViewDelegate {
         
 }
 
+// MARK: UICollectionViewDelegate
 extension ListMediaCollectionViewDelegate: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -60,19 +62,15 @@ extension ListMediaCollectionViewDelegate: UICollectionViewDelegate {
             !presenter.collectionViewIsFetchingData(),
             !presenter.stopRequestFetching {
             
-            presenter.requestFetchData { (result) in
-                switch result.status {
-                case .failure(let error):
-                    collectionView.parentViewController?.showAlert(title: Constants.NotifiNameDefault, message: error)
-                case .success(let indexPaths):
-                    collectionView.insetSafeItems(at: indexPaths)
-                }
+            presenter.requestFetchData { (indexPaths) in
+                collectionView.insetSafeItems(at: indexPaths)
             }
         }
     }
 
 }
 
+// MARK: UICollectionViewDelegateFlowLayout
 extension ListMediaCollectionViewDelegate: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -83,13 +81,16 @@ extension ListMediaCollectionViewDelegate: UICollectionViewDelegateFlowLayout {
             return CGSize.zero
         }
         
-        let maxW = getWidthAfterSubInset(maxWidth: collectionView.frame.width - collectionView.contentInset.right - collectionView.contentInset.left, minimumInteritemSpacing: flowLayout.minimumInteritemSpacing, columnInteritem: CGFloat(presenter?.getColumnInteritem(model: model) ?? 0))
+        let maxW = getWidthAfterSubInset(
+            maxWidth: collectionView.frame.width -
+                collectionView.contentInset.right -
+                collectionView.contentInset.left,
+            minimumInteritemSpacing: flowLayout.minimumInteritemSpacing,
+            columnInteritem: CGFloat(presenter?.getColumnInteritem(model: model) ?? 0))
         
-        let w = presenterCell.getCellWidth(maxWidth: maxW)
-        let h = presenterCell.getCellHeight(maxWidth: maxW)
-        return CGSize(width: w, height: h).getSizeSafePixcel()
+        let width = presenterCell.getCellWidth(maxWidth: maxW)
+        let height = presenterCell.getCellHeight(maxWidth: maxW)
+        return CGSize(width: width, height: height).getSizeSafePixcel()
     }
     
 }
-
-

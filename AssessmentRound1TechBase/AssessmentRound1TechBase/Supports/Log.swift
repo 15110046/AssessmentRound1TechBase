@@ -8,8 +8,10 @@
 
 import Foundation
 
-public func Log(_ s: CustomStringConvertible, file: String = #file, line: Int = #line) {
-    let fileName = file.components(separatedBy: "/").last!
+public func log(_ string: CustomStringConvertible, file: String = #file, line: Int = #line) {
+    guard let fileName = file.components(separatedBy: "/").last else {
+        print("==>>> L\(line) T\(Thread.current)] \(string)")
+        return }
     let date = Date().toString(withFormat: "HH:mm:ss")
-    print("==>>> [\(date) \(fileName) L\(line) T\(Thread.current)] \(s)")
+    print("==>>> [\(date) \(fileName) L\(line) T\(Thread.current)] \(string)")
 }

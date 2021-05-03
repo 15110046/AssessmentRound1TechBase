@@ -15,9 +15,9 @@ class MediaCollectionViewCellPresenter: BaseCellPresenter {
     
     override func getCellName() -> String {
         switch modeDisplay {
-        case .Regular:
+        case .regular:
             return "MediaVerticalCollectionViewCell"
-        case .Compact:
+        case .compact:
             return "MediaHorizontalCollectionViewCell"
         }
     }
@@ -32,10 +32,10 @@ class MediaCollectionViewCellPresenter: BaseCellPresenter {
         if dataModel.finalHeight == -1 {
             let constHeightText: CGFloat = 48
             switch modeDisplay {
-            case .Regular:
+            case .regular:
                 let constHeightCellRegular: CGFloat = 120
                 dataModel.finalHeight = constHeightCellRegular
-            case .Compact:
+            case .compact:
                 dataModel.finalHeight = maxWidth/CGFloat(modeDisplay.column) + constHeightText
             }
         }
@@ -45,9 +45,9 @@ class MediaCollectionViewCellPresenter: BaseCellPresenter {
     override func calculateWidthCell(maxWidth: CGFloat) -> CGFloat {
         if dataModel.finalWidth == -1 {
             switch modeDisplay {
-            case .Regular:
+            case .regular:
                 dataModel.finalWidth = (maxWidth)/CGFloat(modeDisplay.column)
-            case .Compact:
+            case .compact:
                 dataModel.finalWidth = maxWidth/CGFloat(modeDisplay.column)
             }
         }
@@ -61,4 +61,19 @@ class MediaCollectionViewCellPresenter: BaseCellPresenter {
     override func getCellWidth(maxWidth: CGFloat) -> CGFloat {
         return calculateWidthCell(maxWidth: maxWidth)
     }
+    
+    func getImage(size: CGSize) -> UIImage? {
+        let image = dataModel.getImage()
+        
+        if dataModel.getStateImage() == .filtered {
+            return image
+        }
+        
+        if image.size.width*image.size.height <= 1.5*(size.width*size.height) {
+            return image
+        }
+        
+        return nil
+    }
+    
 }

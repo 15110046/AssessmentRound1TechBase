@@ -17,7 +17,7 @@ open class AppRouter: NSObject {
         animated: Bool,
         completion: (() -> Swift.Void)? = nil) {
         guard let viewController = viewController else { return }
-        if let topController = self.getVeryTopViewController(){
+        if let topController = self.getVeryTopViewController() {
             topController.present(viewController, animated: animated, completion: completion)
         }
     }

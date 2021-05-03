@@ -7,39 +7,28 @@
 //
 
 import UIKit
-import Alamofire_SwiftyJSON
 
 class ListMediaViewController: BaseViewController {
     
-    @IBOutlet private weak var collectionView:      UICollectionView?
-    @IBOutlet private weak var segmentView:         SegmentView?
-    @IBOutlet private weak var bottomLoadingView:   BottomLoadingView?
-    
-    weak var delegate:                    ListMediaDelegate? = nil
-    private var presenter:                ListMediaPresenter?
-    private var collectionViewDataSource: ListMediaCollectionViewDataSource?
-    private var collectionViewDelegate:   ListMediaCollectionViewDelegate?
-
-    func inject(presenter: ListMediaPresenter) {
-        self.presenter = presenter
-    }
-    
-    func getCollectionView() -> UICollectionView? {
-        return collectionView
-    }
-    
-    func getSegmentView() -> SegmentView? {
-        return segmentView
-    }
-    
-    func getBottomLoadingView() -> BottomLoadingView? {
-        return bottomLoadingView
-    }
-        
+    @IBOutlet private weak var collectionView: UICollectionView?
+    @IBOutlet private weak var segmentView: SegmentView?
+    @IBOutlet private weak var bottomLoadingView: BottomLoadingView?
     private var refreshControl: UIRefreshControl {
-        let _refreshControl = UIRefreshControl()
-        _refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControl.Event.valueChanged)
-        return _refreshControl
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self,
+                                 action: #selector(handleRefresh(_:)), for: UIControl.Event.valueChanged)
+        return refreshControl
+    }
+
+    weak var delegate: ListMediaDelegate?
+    private var presenter: ListMediaPresenter?
+    private var collectionViewDataSource: ListMediaCollectionViewDataSource?
+    private var collectionViewDelegate: ListMediaCollectionViewDelegate?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewIsReady()
+        firstLoad()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -55,10 +44,20 @@ class ListMediaViewController: BaseViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        viewIsReady()
-        firstLoad()
+    func inject(presenter: ListMediaPresenter) {
+        self.presenter = presenter
+    }
+    
+    func getCollectionView() -> UICollectionView? {
+        return collectionView
+    }
+    
+    func getSegmentView() -> SegmentView? {
+        return segmentView
+    }
+    
+    func getBottomLoadingView() -> BottomLoadingView? {
+        return bottomLoadingView
     }
     
     private func firstLoad() {
@@ -69,13 +68,8 @@ class ListMediaViewController: BaseViewController {
         presenter?.refreshData { [weak self] in
             guard let self = self else { return }
             self.collectionView?.reloadData()
-            self.presenter?.requestFetchData { (result) in
-                switch result.status {
-                case .failure(let error):
-                    self.showAlert(title: Constants.NotifiNameDefault, message: error)
-                case .success:
-                    self.collectionView?.reloadData()
-                }
+            self.presenter?.requestFetchData { _ in
+                self.collectionView?.reloadData()
                 completion?()
             }
         }
@@ -96,8 +90,9 @@ class ListMediaViewController: BaseViewController {
     
     private func setUpSegmentView() {
         segmentView?.delegate = self
-        segmentView?.configSegment(items: presenter?.getModeDisplay().getAllMode() ?? []
-            , selectedMode: presenter?.getModeDisplay() ?? ModeDisplay.Compact)
+        segmentView?.configSegment(
+            items: presenter?.getModeDisplay().getAllMode() ?? [],
+            selectedMode: presenter?.getModeDisplay() ?? ModeDisplay.compact)
     }
     
     private func setUpCollectionView() {
@@ -105,15 +100,15 @@ class ListMediaViewController: BaseViewController {
         
         presenter?.getNameCellsWillregister().forEach({ cellName in
             collectionView?.register(UINib(nibName: cellName,
-                                           bundle:  nil),
+                                           bundle: nil),
                                      forCellWithReuseIdentifier: cellName)
         })
         collectionView?.collectionViewLayout = collectionViewLayout
         collectionView?.contentInset         = UIEdgeInsets(
-                                                   top: CGFloat(presenter?.getInset().top ?? 0),
-                                                   left: CGFloat(presenter?.getInset().left ?? 0),
-                                                   bottom: CGFloat(presenter?.getInset().bottom ?? 0),
-                                                   right: CGFloat(presenter?.getInset().right ?? 0))
+            top: CGFloat(presenter?.getInset().top ?? 0),
+            left: CGFloat(presenter?.getInset().left ?? 0),
+            bottom: CGFloat(presenter?.getInset().bottom ?? 0),
+            right: CGFloat(presenter?.getInset().right ?? 0))
         collectionView?.refreshControl       = refreshControl
         collectionViewDataSource             = ListMediaCollectionViewDataSource(presenter: presenter)
         collectionViewDelegate               = ListMediaCollectionViewDelegate(presenter: presenter)
@@ -123,12 +118,16 @@ class ListMediaViewController: BaseViewController {
     
 }
 
+// MARK: SegmentViewDelegate
 extension ListMediaViewController: SegmentViewDelegate {
     func segmentViewchangeMode(at mode: ModeDisplay) {
         presenter?.setModeDisplay(mode: mode)
         KeyChain.saveSegment(key: mode.name)
         presenter?.clearCacheSize()
-        guard let indexPaths = collectionView?.indexPathsForVisibleItems else { return }
+        guard let indexPaths = collectionView?.indexPathsForVisibleItems else {
+            self.collectionView?.reloadData()
+            return
+        }
         self.collectionView?.performBatchUpdates({
             self.collectionView?.reloadSafeItems(at: indexPaths)
         }, completion: nil)
