@@ -26,7 +26,7 @@ class MediaCollectionViewCellPresenterTest: XCTestCase {
 extension MediaCollectionViewCellPresenterTest {
     func testCalCulateHeightCell() {
         let json = "{\"height\":3465.0,\"width\":123.0}"
-        let cellPresenter = MediaCollectionViewCellPresenter(modeDisplay: .Regular, dataModel: MediaModel(json: JSON(parseJSON: json)))
+        let cellPresenter = MediaCollectionViewCellPresenter(modeDisplay: .regular, dataModel: MediaModel(json: JSON(parseJSON: json)))
         let input = cellPresenter.calculateHeightCell(maxWidth: 400)
         let out: CGFloat = 120
         XCTAssertEqual(input, out)
@@ -34,7 +34,7 @@ extension MediaCollectionViewCellPresenterTest {
     
     func testCalCulateWidthCell() {
         let json = "{\"height\":3465.0,\"width\":123.0}"
-        let cellPresenter = MediaCollectionViewCellPresenter(modeDisplay: .Regular, dataModel: MediaModel(json: JSON(parseJSON: json)))
+        let cellPresenter = MediaCollectionViewCellPresenter(modeDisplay: .regular, dataModel: MediaModel(json: JSON(parseJSON: json)))
         let input = cellPresenter.calculateWidthCell(maxWidth: 240)
         let out: CGFloat = 240
         XCTAssertEqual(input, out)
@@ -42,10 +42,12 @@ extension MediaCollectionViewCellPresenterTest {
     
     func testGetCellNameNotReturnNull() {
         let json = "{\"height\":3465.0,\"width\":123.0}"
-        let cellPresenter = MediaCollectionViewCellPresenter(modeDisplay: .Regular, dataModel: MediaModel(json: JSON(parseJSON: json)))
+        let cellPresenter = MediaCollectionViewCellPresenter(modeDisplay: .regular, dataModel: MediaModel(json: JSON(parseJSON: json)))
         let input = cellPresenter.getCellName()
         XCTAssertNotNil(input)
     }
+    
 }
+
 
 

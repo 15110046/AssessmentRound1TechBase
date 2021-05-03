@@ -128,8 +128,8 @@ extension ListMediaViewController: SegmentViewDelegate {
             self.collectionView?.reloadData()
             return
         }
-        self.collectionView?.performBatchUpdates({
-            self.collectionView?.reloadSafeItems(at: indexPaths)
+        self.collectionView?.performBatchUpdates({ [weak self] in
+            self?.collectionView?.reloadSafeItems(at: indexPaths)
         }, completion: nil)
     }
 }

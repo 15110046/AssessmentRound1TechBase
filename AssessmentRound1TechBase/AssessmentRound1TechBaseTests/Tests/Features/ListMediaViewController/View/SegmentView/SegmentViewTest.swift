@@ -30,12 +30,12 @@ extension SegmentViewTest {
     
     func testConfigSegmentItems() {
         let view = SegmentView(frame: .zero)
-        view.configSegment(items: [.Compact, .Regular], selectedMode: .Compact)
+        view.configSegment(items: [.compact, .regular], selectedMode: .compact)
         XCTAssertEqual(view.getSegmentView()?.selectedSegmentIndex, 0)
     }
     
     func testSegmentConfigOutOfRangeNotCrash() {
         let view = SegmentView(frame: .zero)
-        XCTAssertFalse(view.checkValid(items: [.Regular, .Regular], selectedMode: .Compact))
+        XCTAssertFalse(view.checkValid(items: [.regular, .regular], selectedMode: .compact))
     }
 }

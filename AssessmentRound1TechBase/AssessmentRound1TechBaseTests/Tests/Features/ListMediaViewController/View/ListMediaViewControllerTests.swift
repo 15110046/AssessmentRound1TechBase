@@ -13,7 +13,7 @@ class ListMediaViewControllerTests: XCTestCase {
     var vc: ListMediaViewController?
 
     override func setUp() {
-        vc = ListMediaViewController.create(modeDisplay: .Compact, set: nil) as? ListMediaViewController
+        vc = ListMediaViewController.create(modeDisplay: .compact, set: nil) as? ListMediaViewController
         vc?.loadViewIfNeeded()
         vc?.viewDidLoad()
     }
@@ -128,7 +128,7 @@ extension ListMediaViewControllerTests {
         vc?.inject(presenter: presenter)
         
         vc?.refreshData(completion: { [weak self] in
-            self?.vc?.segmentViewchangeMode(at: .Compact)
+            self?.vc?.segmentViewchangeMode(at: .compact)
             if let dataModel = presenter.getDataSource()[safe: 0] {
                 XCTAssertEqual(dataModel.finalHeight, -1)
                 XCTAssertEqual(dataModel.finalWidth, -1)

@@ -13,7 +13,7 @@ class ListMediaPresenterTest: XCTestCase {
     var vc: ListMediaViewController?
 
     override func setUp() {
-        vc = ListMediaViewController.create(modeDisplay: .Compact, set: nil) as? ListMediaViewController
+        vc = ListMediaViewController.create(modeDisplay: .compact, set: nil) as? ListMediaViewController
         vc?.loadViewIfNeeded()
         vc?.viewDidLoad()
     }
@@ -49,7 +49,7 @@ extension ListMediaPresenterTest {
         let presenter = ListMediaPresenterImp()
         let interactor = ListMediaInteractorImp()
         presenter.inject(interactor: interactor, router: vc)
-        let mode = ModeDisplay.Compact
+        let mode = ModeDisplay.compact
         presenter.setModeDisplay(mode: mode)
         XCTAssertEqual(mode, interactor.getTypeDisplay())
     }
@@ -109,7 +109,7 @@ extension ListMediaPresenterTest {
     func testColumnInteritem() {
         let presenter = ListMediaPresenterImp()
         let interactor = ListMediaInteractorImp()
-        interactor.inject(modeDisplay: .Regular)
+        interactor.inject(insets: .init(top: 10, left: 10, bottom: 10, right: 10), modeDisplay: .regular)
         presenter.inject(interactor: interactor, router: vc)
 
         let input = presenter.getColumnInteritem(model: NoteModel())

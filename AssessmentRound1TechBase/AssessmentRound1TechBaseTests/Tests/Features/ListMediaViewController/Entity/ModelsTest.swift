@@ -34,42 +34,16 @@ extension ModelsTest {
     }
 }
 
-//MARK: - Test NoteModel
-extension ModelsTest {
-    func testStringAttributes() {
-        let model = NoteModel()
-        let mode = ModeDisplay.Compact
-        let input = model.getAttributedString(type: mode).string
-        let output = mode.name + " Cell" + "\nThumbnail Size: \(mode.nameThumbnail)" + "\nLayout:\n \t+\(mode.nameLayout)"
-        XCTAssertEqual(input, output)
-    }
-}
-
 //MARK: - Test ModeDisplay
 extension ModelsTest {
     func testInitAlwayReturnCompactWhenStringOutSizeFormat() {
         let mode = ModeDisplay(string: "123123123")
-        XCTAssertEqual(mode, ModeDisplay.Compact)
+        XCTAssertEqual(mode, ModeDisplay.compact)
     }
 
     func testGetAllMode() {
-        let mode = ModeDisplay.Regular.getAllMode()
-        XCTAssertEqual(mode, [.Regular, .Compact])
+        let mode = ModeDisplay.regular.getAllMode()
+        XCTAssertEqual(mode, [.regular, .compact])
     }
     
-//    func testGetMaxWitdhCollectionViewWithColumn() {
-//        let mode = ModeDisplay.Regular
-//        let input = mode.getMaxWitdh(collectionView: UICollectionView(frame: CGRect(x: 0, y: 0, width: 414, height: 720), collectionViewLayout: UICollectionViewFlowLayout()), columnExpected: 3)
-//        let ouput: CGFloat = 383.5
-//        XCTAssertEqual(input, ouput)
-//    }
-    
-//    func testGetHeightForItemWithMediaModel() {
-//        let mode = ModeDisplay.Compact
-//
-//        let model = MediaModel(json: JSON(parseJSON: ""))
-//        let input = mode.getHeightForItem(UICollectionView(frame: CGRect(x: 0, y: 0, width: 414, height: 720), collectionViewLayout: UICollectionViewFlowLayout()), at: model)
-//        let output: CGFloat = 249.75
-//        XCTAssertEqual(input, output)
-//    }
 }
