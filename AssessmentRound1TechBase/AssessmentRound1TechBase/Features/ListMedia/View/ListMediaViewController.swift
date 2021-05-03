@@ -19,8 +19,7 @@ class ListMediaViewController: BaseViewController {
                                  action: #selector(handleRefresh(_:)), for: UIControl.Event.valueChanged)
         return refreshControl
     }
-
-    weak var delegate: ListMediaDelegate?
+    
     private var presenter: ListMediaPresenter?
     private var collectionViewDataSource: ListMediaCollectionViewDataSource?
     private var collectionViewDelegate: ListMediaCollectionViewDelegate?
@@ -33,15 +32,12 @@ class ListMediaViewController: BaseViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        presenter?.clearCacheSize()
-        self.collectionView?.reloadData()
+        presenter?.deviceWillTransition(delegate: self)
     }
     
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
-        presenter?.clearAllOperationsLoadMedia()
-        refreshData {
-            refreshControl.endRefreshing()
-        }
+        refreshControl.endRefreshing()
+        refreshData()
     }
     
     func inject(presenter: ListMediaPresenter) {
@@ -64,15 +60,8 @@ class ListMediaViewController: BaseViewController {
         refreshData()
     }
     
-    func refreshData(completion: (() -> Void)? = nil) {
-        presenter?.refreshData { [weak self] in
-            guard let self = self else { return }
-            self.collectionView?.reloadData()
-            self.presenter?.requestFetchData { _ in
-                self.collectionView?.reloadData()
-                completion?()
-            }
-        }
+    func refreshData() {
+        presenter?.refreshData(delegate: self)
     }
     
     private func viewIsReady() {
@@ -82,10 +71,7 @@ class ListMediaViewController: BaseViewController {
     }
     
     private func setUpLoadingBottomView() {
-        bottomLoadingView?.isHidden = true
-        presenter?.subscribeStateLoading = { [weak self] isShow in
-            self?.bottomLoadingView?.setHidden(!isShow)
-        }
+        presenter?.startSubscribeLoadingView(delegate: self)
     }
     
     private func setUpSegmentView() {
@@ -110,8 +96,8 @@ class ListMediaViewController: BaseViewController {
             bottom: CGFloat(presenter?.getInset().bottom ?? 0),
             right: CGFloat(presenter?.getInset().right ?? 0))
         collectionView?.refreshControl       = refreshControl
-        collectionViewDataSource             = ListMediaCollectionViewDataSource(presenter: presenter)
-        collectionViewDelegate               = ListMediaCollectionViewDelegate(presenter: presenter)
+        collectionViewDataSource             = ListMediaCollectionViewDataSource(presenter: presenter, delegate: self)
+        collectionViewDelegate               = ListMediaCollectionViewDelegate(presenter: presenter, delegate: self)
         collectionView?.delegate             = collectionViewDelegate
         collectionView?.dataSource           = collectionViewDataSource
     }
@@ -121,15 +107,32 @@ class ListMediaViewController: BaseViewController {
 // MARK: SegmentViewDelegate
 extension ListMediaViewController: SegmentViewDelegate {
     func segmentViewchangeMode(at mode: ModeDisplay) {
-        presenter?.setModeDisplay(mode: mode)
-        KeyChain.saveSegment(key: mode.name)
-        presenter?.clearCacheSize()
-        guard let indexPaths = collectionView?.indexPathsForVisibleItems else {
-            self.collectionView?.reloadData()
-            return
-        }
+        presenter?.setModeDisplay(mode: mode, delegate: self, indexPathsVisible: collectionView?.indexPathsForVisibleItems)
+    }
+}
+
+// MARK: Outside -> View
+extension ListMediaViewController: ListMediaViewDelegate {
+    func collectionViewInsertItems(at indexPaths: [IndexPath]) {
+        collectionView?.insetSafeItems(at: indexPaths)
+    }
+    
+    func collectionViewDequequeCell(cellName: String, indexPath: IndexPath) -> UICollectionViewCell {
+        return collectionView?.dequeueReusableCell(withReuseIdentifier: cellName, for: indexPath) ?? UICollectionViewCell()
+    }
+    
+    func collectionViewReloadData() {
+        collectionView?.reloadData()
+    }
+    
+    func collectionViewReloadItems(at indexPaths: [IndexPath]) {
         self.collectionView?.performBatchUpdates({ [weak self] in
             self?.collectionView?.reloadSafeItems(at: indexPaths)
-        }, completion: nil)
+            }, completion: nil)
     }
+    
+    func bottomViewSetHidden(_ isHidden: Bool) {
+        bottomLoadingView?.setHidden(isHidden)
+    }
+    
 }

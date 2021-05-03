@@ -13,7 +13,7 @@ class ListMediaPresenterTest: XCTestCase {
     var vc: ListMediaViewController?
 
     override func setUp() {
-        vc = ListMediaViewController.create(modeDisplay: .compact, set: nil) as? ListMediaViewController
+        vc = ListMediaViewController.create() as? ListMediaViewController
         vc?.loadViewIfNeeded()
         vc?.viewDidLoad()
     }
@@ -50,71 +50,44 @@ extension ListMediaPresenterTest {
         let interactor = ListMediaInteractorImp()
         presenter.inject(interactor: interactor, router: vc)
         let mode = ModeDisplay.compact
-        presenter.setModeDisplay(mode: mode)
+        presenter.setModeDisplay(mode: .compact, delegate: vc!, indexPathsVisible: [])
         XCTAssertEqual(mode, interactor.getTypeDisplay())
     }
     
     func testRefreshData() {
+        guard let delegate = vc else { return }
         let presenter = ListMediaPresenterImp()
         let interactor = ListMediaInteractorImp()
         presenter.inject(interactor: interactor, router: vc)
-
-        presenter.refreshData {
-            XCTAssertEqual([], presenter.getDataSource())
-        }
+        presenter.refreshData(delegate: delegate)
+        XCTAssertEqual([], presenter.getDataSource())
     }
+    
     func testValueIsFetchingWhenRequestFetchingData() {
         let presenter = ListMediaPresenterImp()
         let interactor = ListMediaInteractorImp()
         presenter.inject(interactor: interactor, router: vc)
 
         presenter.requestFetchData { (indexPaths) in
-            XCTAssertTrue(presenter.collectionViewIsFetchingData())
+            DispatchQueue.main.async {
+                XCTAssertTrue(presenter.collectionViewIsFetchingData())
+            }
         }
     }
 
     func testCancelRequestWhenFetchingDataAgain() {
+        guard let delegate = vc else { return }
         let presenter = ListMediaPresenterImp()
         let interactor = ListMediaInteractorImp()
         presenter.inject(interactor: interactor, router: vc)
 
-        if IndexPath(item: 100, section: 0).item >= presenter.getDataSource().count - 1,
-            !presenter.collectionViewIsFetchingData(),
-            !presenter.stopRequestFetching {
-            presenter.requestFetchData { (indexPaths) in
-                
-            }
-        }
-        if IndexPath(item: 100, section: 0).item >= presenter.getDataSource().count - 1,
-            !presenter.collectionViewIsFetchingData(),
-            !presenter.stopRequestFetching {
-            presenter.requestFetchData { (indexPaths) in
+        presenter.collectionViewWillDisplay(forItemAt: IndexPath(item: presenter.getDataSource().count - 1, section: 0), delegate: delegate)
+        
+        presenter.requestFetchData { _ in
+            DispatchQueue.main.async {
                 XCTAssertTrue(false)
             }
         }
-    }
-    
-    func testSuccesLoadMore() {
-        let presenter = ListMediaPresenterImp()
-        let interactor = ListMediaInteractorImp()
-        presenter.inject(interactor: interactor, router: vc)
-
-        if IndexPath(item: 100, section: 0).item >= presenter.getDataSource().count - 1,
-            !presenter.collectionViewIsFetchingData(),
-            !presenter.stopRequestFetching {
-            XCTAssertTrue(true)
-        }
-    }
-    
-    func testColumnInteritem() {
-        let presenter = ListMediaPresenterImp()
-        let interactor = ListMediaInteractorImp()
-        interactor.inject(insets: .init(top: 10, left: 10, bottom: 10, right: 10), modeDisplay: .regular)
-        presenter.inject(interactor: interactor, router: vc)
-
-        let input = presenter.getColumnInteritem(model: NoteModel())
-        let output = 0
-        XCTAssertEqual(input, output)
     }
     
 }

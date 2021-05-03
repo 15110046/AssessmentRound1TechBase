@@ -36,7 +36,7 @@ extension MediaCollectionViewCellPresenterTest {
         let json = "{\"height\":3465.0,\"width\":123.0}"
         let cellPresenter = MediaCollectionViewCellPresenter(modeDisplay: .regular, dataModel: MediaModel(json: JSON(parseJSON: json)))
         let input = cellPresenter.calculateWidthCell(maxWidth: 240)
-        let out: CGFloat = 240
+        let out: CGFloat = (240)/CGFloat(ModeDisplay.regular.column)
         XCTAssertEqual(input, out)
     }
     

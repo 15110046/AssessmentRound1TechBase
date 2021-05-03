@@ -13,7 +13,7 @@ class ExtensionsTest: XCTestCase {
     var vc = ListMediaViewController()
 
     override func setUp() {
-        vc = ListMediaViewController.create(modeDisplay: .regular, set: nil) as? ListMediaViewController ?? ListMediaViewController()
+        vc = ListMediaViewController.create() as? ListMediaViewController ?? ListMediaViewController()
         vc.loadViewIfNeeded()
     }
 

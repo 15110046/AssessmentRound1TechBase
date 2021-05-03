@@ -9,6 +9,8 @@
 import UIKit
 import FPSCounter
 
+let showFPS = false
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -21,7 +23,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setupFpsTracking() {
-        FPSCounter.showInStatusBar()
+        if showFPS {
+            FPSCounter.showInStatusBar()
+        }
+    }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.all
     }
     
     func setupWindow() {
@@ -32,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func getFirstScreen() -> UIViewController {
-        return ListMediaViewController.create(modeDisplay: KeyChain.loadSegment(), set: nil)
+        return ListMediaViewController.create()
     }
 
 }

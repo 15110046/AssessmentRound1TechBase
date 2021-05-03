@@ -23,8 +23,11 @@ public struct Response<T> {
         self.status = status
     }
 }
+public protocol APIService {
+    func fetchData(page: Int, limit: Int, completion: @escaping (DataResponse<JSON>) -> ())
+}
 
-open class MediaService: NSObject {
+open class MediaService: NSObject, APIService {
     public static var share: MediaService = MediaService()
     
     public func fetchData(page: Int, limit: Int, completion: @escaping (DataResponse<JSON>) -> ()) {

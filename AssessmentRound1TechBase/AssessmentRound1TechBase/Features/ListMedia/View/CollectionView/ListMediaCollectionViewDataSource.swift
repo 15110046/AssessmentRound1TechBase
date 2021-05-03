@@ -11,9 +11,11 @@ import UIKit
 class ListMediaCollectionViewDataSource: NSObject {
     
     weak var presenter: ListMediaDataSourcePresenter?
+    weak var delegate: ListMediaViewDelegate?
     
-    init(presenter: ListMediaDataSourcePresenter?) {
+    init(presenter: ListMediaDataSourcePresenter?, delegate: ListMediaViewDelegate?) {
         self.presenter = presenter
+        self.delegate = delegate
     }
     
 }
@@ -25,21 +27,8 @@ extension ListMediaCollectionViewDataSource: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        guard let presenterCell = presenter?.presenterForCell(at: indexPath.item) else { return UICollectionViewCell() }
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: presenterCell.getCellName(), for: indexPath)
-        
-        if let cellViewInterface = cell as? CellViewInterface {
-            cellViewInterface.loadCell(presenterCell)
-        }
-        
-        guard let modelModel = presenter?.getDataSource()[safe: indexPath.item] as? MediaModel else { return cell }
-        
-        presenter?.startLoadMedia(for: modelModel, indexPath: indexPath, completion: { (indexPaths) in
-            collectionView.reloadSafeItems(at: indexPaths)
-        })
-
+        guard let delegate = delegate,
+            let cell = presenter?.cellForItemAt(indexPath: indexPath, delegate: delegate) as? UICollectionViewCell else { return UICollectionViewCell() }
         return cell
     }
     

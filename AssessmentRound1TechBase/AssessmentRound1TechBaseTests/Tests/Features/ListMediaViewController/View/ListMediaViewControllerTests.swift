@@ -13,7 +13,7 @@ class ListMediaViewControllerTests: XCTestCase {
     var vc: ListMediaViewController?
 
     override func setUp() {
-        vc = ListMediaViewController.create(modeDisplay: .compact, set: nil) as? ListMediaViewController
+        vc = ListMediaViewController.create() as? ListMediaViewController
         vc?.loadViewIfNeeded()
         vc?.viewDidLoad()
     }
@@ -82,9 +82,12 @@ extension ListMediaViewControllerTests {
     }
     
     func testDataSourceAtIndexPathOutOfRangeReturnNil() {
-        guard let collectionView = vc?.getCollectionView(),
+        guard
+            let delegate = vc,
+            let collectionView = vc?.getCollectionView(),
             let dataSource = collectionView.dataSource as? ListMediaCollectionViewDataSource else { return }
-        XCTAssertNil(dataSource.presenter?.getDataSource()[safe: -1])
+        XCTAssertNil(dataSource.presenter?.cellForItemAt(indexPath: IndexPath(item: 10000, section: 0), delegate: delegate)
+)
     }
 }
 
@@ -126,13 +129,13 @@ extension ListMediaViewControllerTests {
         let interactor = ListMediaInteractorImp()
         presenter.inject(interactor: interactor, router: vc)
         vc?.inject(presenter: presenter)
-        
-        vc?.refreshData(completion: { [weak self] in
-            self?.vc?.segmentViewchangeMode(at: .compact)
-            if let dataModel = presenter.getDataSource()[safe: 0] {
-                XCTAssertEqual(dataModel.finalHeight, -1)
-                XCTAssertEqual(dataModel.finalWidth, -1)
+        presenter.requestFetchData { _ in
+            DispatchQueue.main.async {
+                self.vc?.segmentViewchangeMode(at: .compact)
+                let dataModel = presenter.getDataSource()[safe: 0]
+                XCTAssertEqual(dataModel?.finalHeight, -1)
+                XCTAssertEqual(dataModel?.finalWidth, -1)
             }
-        })
+        }
     }
 }

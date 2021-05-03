@@ -16,10 +16,13 @@ class ListMediaInteractorImp: BaseInteractor {
     var modeDisplay: ModeDisplay = .regular
     var completionFetchData: ((Bool) -> Void)?
     private var dataSource: [BaseModel] = []
-
-    func inject(insets: BasePresenter.Insets,
-                modeDisplay: ModeDisplay) {
-        self.modeDisplay = modeDisplay
+    private var useCase: UseCaseMedia = UseCaseMedia()
+    
+    func inject(insets: BasePresenter.Insets) {
+        self.modeDisplay = useCase.getLocalService()
+                                  .keyChainService
+                                  .getDataModeDisplayFromLocal()?
+                                  .to(type: ModeDisplay.self) ?? ModeDisplay.regular
         self.insets = insets
     }
     
@@ -134,7 +137,7 @@ extension ListMediaInteractorImp: ListMediaInteractor {
     
     func fetchData(currentPage: Int, limit: Int, completion: @escaping ([IndexPath]) -> Void) {
         updateStateFetching(value: true)
-        MediaService.share.fetchData(page: currentPage, limit: limit) { [weak self] (res) in
+        useCase.getProviderMedia().fetchData(page: currentPage, limit: limit) { [weak self] (res) in
             
             guard let self = self else { return }
             
@@ -182,8 +185,13 @@ extension ListMediaInteractorImp: ListMediaInteractor {
         return modeDisplay
     }
     
-    func setTypeDisplay(_ type: ModeDisplay) {
+    func setModeDisplay(type: ModeDisplay, saveToLocal: Bool) {
         self.modeDisplay = type
+        if saveToLocal {
+            useCase.getLocalService()
+                .keyChainService
+                .saveStateModeToLocal(string: type.name)
+        }
     }
     
 }

@@ -33,7 +33,7 @@ extension NoteCollectionViewCellPresenterTest {
     func testCalCulateWidthCell() {
         let cellPresenter = NoteCollectionViewCellPresenter(modeDisplay: .regular, dataModel: NoteModel())
         let input = cellPresenter.calculateWidthCell(maxWidth: 414)
-        let out: CGFloat = 414
+        let out: CGFloat = (414)/CGFloat(ModeDisplay.regular.column)
         XCTAssertEqual(input, out)
     }
     

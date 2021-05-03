@@ -16,12 +16,11 @@ extension KeyChain {
         _ = KeyChain.save(key: SegmentKey, data: data)
     }
     
-    public class func loadSegment() -> ModeDisplay {
+    public class func loadSegmentData() -> Data? {
         if let receivedData = KeyChain.load(key: SegmentKey) {
-            let result = receivedData.to(type: ModeDisplay.self)
-            return result
+            return receivedData
         }
-        return .regular
+        return nil
     }
     
 }

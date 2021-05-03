@@ -15,27 +15,47 @@ class ListMediaPresenterImp: BasePresenter {
     
     private var currentPage: Int = 1
     let limitItemInBlock: Int = Constants.LimitItemInBlock
-    var subscribeStateLoading: ((Bool) -> Void)?
-    var stopRequestFetching: Bool = false
+    private var stopRequestFetching: Bool = false
     
     func inject(interactor: ListMediaInteractor?, router: ListMediaRouter?) {  
         self.interactor = interactor
         self.router = router
-        interactor?.completionFetchData = { [weak self] value in
-            self?.subscribeStateLoading?(value)
-        }
     }
     
-}
-
-extension ListMediaPresenterImp: ListMediaPresenter {
+    func collectionViewIsFetchingData() -> Bool {
+        return interactor?.isFetching ?? false
+    }
     
-    func clearCacheSize() {
-        interactor?.getDataSource().forEach({ (model) in
-            model.clearSize()
+    func requestFetchData(completion: @escaping ([IndexPath]) -> Void) {
+        if !networkIsWork {
+            router?.showToast(title: Constants.NotifiNameDefault, message: Constants.ErrorNetwork)
+            return
+        }
+        
+        interactor?.fetchData(currentPage: currentPage, limit: limitItemInBlock, completion: { [weak self] (indexPaths) in
+            if !indexPaths.isEmpty {
+                self?.currentPage += 1
+                completion(indexPaths)
+            } else {
+                self?.stopRequestFetching = true
+            }
         })
     }
     
+    func presenterForCell(at index: Int) -> BaseCellPresenter? {
+        guard let dataModel = interactor?.getDataSource()[safe: index] else {
+            return nil
+        }
+        switch dataModel {
+        case let mediaModel as MediaModel:
+            return MediaCollectionViewCellPresenter(modeDisplay: interactor?.modeDisplay ?? ModeDisplay.regular, dataModel: mediaModel)
+        case let noteModel as NoteModel:
+            return NoteCollectionViewCellPresenter(modeDisplay: interactor?.modeDisplay ?? ModeDisplay.regular, dataModel: noteModel)
+        default:
+            return nil
+        }
+    }
+
     func getColumnInteritem(model: BaseModel) -> Int {
         switch interactor?.modeDisplay {
         case .regular:
@@ -54,7 +74,109 @@ extension ListMediaPresenterImp: ListMediaPresenter {
             return 0
         }
     }
+
+    func clearCacheSize() {
+        interactor?.getDataSource().forEach({ (model) in
+            model.clearSize()
+        })
+    }
     
+    func clearAllOperationsLoadMedia() {
+        interactor?.clearDownloadOperations()
+    }
+    
+    func resumeAllOperationsLoadMedia() {
+        interactor?.resumeAllOperations()
+    }
+    
+    func suspendAllOperationsLoadMedia() {
+        interactor?.suspendAllOperations()
+    }
+
+}
+
+// MARK: ListMediaDataSourcePresenter
+extension ListMediaPresenterImp: ListMediaDataSourcePresenter {
+    
+    func getNumberOfItemsInSection() -> Int {
+        return interactor?.getDataSource().count ?? 0
+    }
+    
+    func cellForItemAt(indexPath: IndexPath, delegate: ListMediaViewDelegate) -> CellViewInterface? {
+        guard
+            let presenterCell = presenterForCell(at: indexPath.item),
+            let cell = delegate.collectionViewDequequeCell(cellName: presenterCell.getCellName(), indexPath: indexPath) as? CellViewInterface else { return nil }
+        
+        cell.loadCell(presenterCell)
+        
+        guard let modelModel = getDataSource()[safe: indexPath.item] as? MediaModel else { return cell }
+        
+        startLoadMedia(for: modelModel, indexPath: indexPath, completion: { (indexPaths) in
+            delegate.collectionViewReloadItems(at: indexPaths)
+        })
+        
+        return cell
+    }
+}
+
+// MARK: ListMediaDelegatePresenter
+extension ListMediaPresenterImp: ListMediaDelegatePresenter {
+    
+    func collectionViewScroll(decelerate: Bool, indexPathsVisible: [IndexPath], delegate: ListMediaViewDelegate) {
+        guard !decelerate else { return }
+        loadImagesForOnscreenCells(at: indexPathsVisible) { indexPaths in
+            delegate.collectionViewReloadItems(at: indexPaths)
+        }
+        resumeAllOperationsLoadMedia()
+    }
+    
+    func collectionViewDidEndDecelerating(indexPathsVisible: [IndexPath], delegate: ListMediaViewDelegate) {
+        loadImagesForOnscreenCells(at: indexPathsVisible) { indexPaths in
+            delegate.collectionViewReloadItems(at: indexPaths)
+        }
+        resumeAllOperationsLoadMedia()
+    }
+    
+    func collectionViewWillDisplay(forItemAt indexPath: IndexPath, delegate: ListMediaViewDelegate) {
+        if
+            indexPath.item >= getDataSource().count - 1,
+            !collectionViewIsFetchingData(),
+            !stopRequestFetching {
+            
+            requestFetchData { (indexPaths) in
+                delegate.collectionViewInsertItems(at: indexPaths)
+            }
+        }
+
+    }
+    
+    func getWidthAfterSubInset(at indexPath: IndexPath, maxWidth: CGFloat, minimumInteritemSpacing: CGFloat) -> CGFloat {
+        guard let model = getDataSource()[safe: indexPath.item] else { return 0 }
+        let safePixel: CGFloat = 0.5
+        let columnInteritem = CGFloat(getColumnInteritem(model: model))
+        return maxWidth - minimumInteritemSpacing*columnInteritem - safePixel
+    }
+    
+    func collectionViewSizeForItem(maxWidth: CGFloat, at indexPath: IndexPath) -> CGSize {
+        guard let presenterCell = presenterForCell(at: indexPath.item) else {
+                return CGSize.zero
+        }
+        
+        let width = presenterCell.getCellWidth(maxWidth: maxWidth)
+        let height = presenterCell.getCellHeight(maxWidth: maxWidth)
+        return CGSize(width: width, height: height).getSizeSafePixcel()
+    }
+    
+}
+
+// MARK: ListMediaPresenter
+extension ListMediaPresenterImp: ListMediaPresenter {
+        
+    func deviceWillTransition(delegate: ListMediaViewDelegate) {
+        clearCacheSize()
+        delegate.collectionViewReloadData()
+    }
+        
     func startLoadMedia(for media: MediaModel,
                         indexPath: IndexPath,
                         completion: @escaping ([IndexPath]) -> Void) {
@@ -76,22 +198,22 @@ extension ListMediaPresenterImp: ListMediaPresenter {
                                completion: completion)
     }
     
-    func resumeAllOperationsLoadMedia() {
-        interactor?.resumeAllOperations()
+    func startSubscribeLoadingView(delegate: ListMediaViewDelegate) {
+        interactor?.completionFetchData = { value in
+            delegate.bottomViewSetHidden(!value)
+        }
     }
     
-    func clearAllOperationsLoadMedia() {
-        interactor?.clearDownloadOperations()
+    func setModeDisplay(mode: ModeDisplay, delegate: ListMediaViewDelegate, indexPathsVisible: [IndexPath]?) {
+        interactor?.setModeDisplay(type: mode, saveToLocal: true)
+        clearCacheSize()
+        guard let indexPaths = indexPathsVisible else {
+            delegate.collectionViewReloadData()
+            return
+        }
+        delegate.collectionViewReloadItems(at: indexPaths)
     }
-    
-    func suspendAllOperationsLoadMedia() {
-        interactor?.suspendAllOperations()
-    }
-    
-    func setModeDisplay(mode: ModeDisplay) {
-        interactor?.modeDisplay = mode
-    }
-    
+
     func getModeDisplay() -> ModeDisplay {
         return interactor?.modeDisplay ?? ModeDisplay.regular
     }
@@ -103,41 +225,16 @@ extension ListMediaPresenterImp: ListMediaPresenter {
                                                           right: 0)
     }
     
-    func collectionViewIsFetchingData() -> Bool {
-        return interactor?.isFetching ?? false
-    }
-    
-    func refreshData() {
+    func refreshData(delegate: ListMediaViewDelegate) {
+        clearAllOperationsLoadMedia()
+        clearCacheSize()
         currentPage = 1
         stopRequestFetching = false
         interactor?.clearDataSource()
-    }
-
-    func refreshData(completion: @escaping () -> Void) {
-        currentPage = 1
-        stopRequestFetching = false
-        interactor?.clearDataSource()
-        completion()
-    }
-
-    func requestFetchData(completion: @escaping ([IndexPath]) -> Void) {
-        if !networkIsWork {
-            router?.showToast(title: Constants.NotifiNameDefault, message: Constants.ErrorNetwork)
-            return
+        delegate.collectionViewReloadData()
+        requestFetchData { _ in
+            delegate.collectionViewReloadData()
         }
-        
-        interactor?.fetchData(currentPage: currentPage, limit: limitItemInBlock, completion: { [weak self] (indexPaths) in
-            if !indexPaths.isEmpty {
-                self?.currentPage += 1
-                completion(indexPaths)
-            } else {
-                self?.stopRequestFetching = true
-            }
-        })
-    }
-    
-    func getNumberOfItemsInSection() -> Int {
-        return interactor?.getDataSource().count ?? 0
     }
     
     func getDataSource() -> [BaseModel] {
@@ -155,18 +252,4 @@ extension ListMediaPresenterImp: ListMediaPresenter {
                                                    minimumInteritemSpacing: 10)
     }
     
-    func presenterForCell(at index: Int) -> BaseCellPresenter? {
-        guard let dataModel = interactor?.getDataSource()[safe: index] else {
-            return nil
-        }
-        switch dataModel {
-        case let mediaModel as MediaModel:
-            return MediaCollectionViewCellPresenter(modeDisplay: interactor?.modeDisplay ?? ModeDisplay.regular, dataModel: mediaModel)
-        case let noteModel as NoteModel:
-            return NoteCollectionViewCellPresenter(modeDisplay: interactor?.modeDisplay ?? ModeDisplay.regular, dataModel: noteModel)
-        default:
-            return nil
-        }
-    }
-
 }
