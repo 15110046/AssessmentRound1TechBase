@@ -2,7 +2,7 @@
 
 ## Coding Challenge - TechBase
 
-## Cấu trúc file
+## Cấu trúc Folder
 
 - AssessmentRound1TechBase(Project) 
 - SubModules(các module độc lập được tách biệt để sử dụng cho các project/target khác sau này)
@@ -10,7 +10,7 @@
     + TBVExtensions 
     + TBVNetWork
              
-## Một số libs sử dụng
+## Libs sử dụng
 
 - 'Alamofire-SwiftyJSON', '3.0.0'
 - 'Alamofire', '4.9.0'
@@ -18,7 +18,7 @@
 - 'FPSCounter', '~> 4.1' 
 - 'SwiftLint'
 
-## Những thắc mắc
+## Thắc mắc
 
   - API chưa chuẩn format(thiếu message, status)
   - API thiếu biến thông báo cho client biết khi nào dừng request fetching more data
