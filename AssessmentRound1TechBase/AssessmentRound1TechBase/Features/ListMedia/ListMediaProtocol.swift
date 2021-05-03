@@ -21,19 +21,15 @@ protocol ListMediaPresenter: ListMediaDataSourcePresenter, ListMediaDelegatePres
     func getInset() -> BasePresenter.Insets
     func clearCacheSize()
     func clearAllOperationsLoadMedia()
+    func setModeDisplay(mode: ModeDisplay)
 }
 
 protocol ListMediaDataSourcePresenter: ListMediaOperationPresenter {
     func getNumberOfItemsInSection() -> Int
-    func getDataSource() -> [BaseModel]
-    func getModeDisplay() -> ModeDisplay
     func presenterForCell(at index: Int) -> BaseCellPresenter?
 }
 
 protocol ListMediaDelegatePresenter: ListMediaOperationPresenter {
-    func getDataSource() -> [BaseModel]
-    func getModeDisplay() -> ModeDisplay
-    func setModeDisplay(mode: ModeDisplay)
     func collectionViewIsFetchingData() -> Bool
     func requestFetchData(completion: @escaping ([IndexPath]) -> Void)
     func presenterForCell(at index: Int) -> BaseCellPresenter?
@@ -42,6 +38,8 @@ protocol ListMediaDelegatePresenter: ListMediaOperationPresenter {
 
 protocol ListMediaOperationPresenter: class {
     var stopRequestFetching: Bool { get set }
+    func getDataSource() -> [BaseModel]
+    func getModeDisplay() -> ModeDisplay
     func startLoadMedia(for media: MediaModel, indexPath: IndexPath, completion: @escaping ([IndexPath]) -> Void)
     func loadImagesForOnscreenCells(at indexPathsForVisible: [IndexPath], completion: @escaping ([IndexPath]) -> Void)
     func resumeAllOperationsLoadMedia()
@@ -78,14 +76,14 @@ extension ListMediaViewController {
     static func create(modeDisplay: ModeDisplay,
                        set delegate: Any?) -> UIViewController {
         let vc = ListMediaViewController()
-        vc.delegate = delegate as? ListMediaDelegate
         let presenter = ListMediaPresenterImp()
         let interactor = ListMediaInteractorImp()
         let router = vc
 
-        interactor.inject(insets: BasePresenter.Insets(top: 10, left: 10, bottom: 10, right: 10), modeDisplay: KeyChain.loadSegment())
+        interactor.inject(insets: BasePresenter.Insets(top: 10, left: 10, bottom: 10, right: 10), modeDisplay: modeDisplay)
         presenter.inject(interactor: interactor, router: router)
         vc.inject(presenter: presenter)
+        vc.delegate = delegate as? ListMediaDelegate
         return vc
     }
 }

@@ -63,17 +63,17 @@ class MediaCollectionViewCellPresenter: BaseCellPresenter {
     }
     
     func getImage(size: CGSize) -> UIImage? {
-        let image = dataModel.getImage()
-        
-        if dataModel.getStateImage() == .filtered {
-            return image
+        switch dataModel.getStateImage() {
+        case .filtered: return dataModel.getImage()
+        case .downloaded:
+            let image = dataModel.getImage()
+            if image.size.width*image.size.height <= 1.5*(size.width*size.height) {
+                return image
+            } else {
+                return Constants.Image.Default
+            }
+        case .new, .failed: return Constants.Image.Default
         }
-        
-        if image.size.width*image.size.height <= 1.5*(size.width*size.height) {
-            return image
-        }
-        
-        return nil
     }
     
 }
