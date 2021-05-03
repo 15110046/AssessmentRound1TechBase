@@ -22,10 +22,10 @@
 
   - API chưa chuẩn format(thiếu message, status...)
   - API thiếu biến thông báo cho client biết khi nào dừng request fetching more data
-  - API trả ra hình size quá lớn, việc download 1 tấm hình size 4000x4000 tốn rất nhiều băng thông. Và việc display những
-tấm hình size cực lớn như này rất dễ bị tràn mem, dưới client(mobile) size hiển thị trên iPad 12.9 inch cũng chỉ display
-được 1024x1366 nên lúc này phải resize tấm hình về kích thước nhỏ hơn nó rất nhiều, việc này sẽ làm CPU tăng cao. -> đề 
-xuất API support trả ra hình có kích thước tương đối hơn
+  - API trả ra hình size quá lớn, việc download 1 tấm hình size 4000x4000 tốn rất nhiều băng thông và khi display nhiều 
+tấm hình size lớn như này rất dễ bị tràn mem, dưới client(mobile) size hiển thị trên iPad 12.9 inch cũng chỉ display
+được 1024x1366 nên lúc này phải resize tấm hình về kích thước nhỏ hơn nó rất nhiều, việc này sẽ làm CPU tăng cao.
+-> đề xuất: API support trả ra hình có kích thước tương đối hơn
 
 
 ## Một số tính năng cải thiện trải nghiệm người dùng chưa làm
