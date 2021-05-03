@@ -20,7 +20,7 @@
 
 ## Thắc mắc
 
-  - API chưa chuẩn format(thiếu message, status)
+  - API chưa chuẩn format(thiếu message, status...)
   - API thiếu biến thông báo cho client biết khi nào dừng request fetching more data
   - API trả ra hình size quá lớn, việc download 1 tấm hình size 4000x4000 tốn rất nhiều băng thông. Và việc display những
 tấm hình size cực lớn như này rất dễ bị tràn mem, dưới client(mobile) size hiển thị trên iPad 12.9 inch cũng chỉ display
